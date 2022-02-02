@@ -1,25 +1,21 @@
-import logo from './logo.svg';
+//We have gotten rid of logo.svg as it is not required for our project.
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+//rcc -> This gives us class based react component below because of ES7 React/ Redux/ GraphQL extension
+import React, { Component } from 'react';
+
+export default class App extends Component {
+
+  d ='ishan'; // class variable
+
+  //Note: in class based component we are using render method to return our code, which was not the case in functional based component(in which we were returning the data directly)
+  render() {
+    return ( //We have used () here for returning data as our code is longer than a single line.
+    <div>
+         Hello {this.d}, this is my first class based component. 
+          {/* As we can see in the above example, we can only access class variables using this operator */}
+    </div>
+    )
+  }
+}
