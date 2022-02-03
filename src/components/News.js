@@ -17,7 +17,8 @@ export class News extends Component {
     
     this.state={
         articles: [],
-        loading: false
+        loading: false,
+        page:1
 
     }
 }
@@ -25,16 +26,50 @@ export class News extends Component {
     // componentDidMount() is a lifecycle method will run once render() method has completed its execution.
     //async function has the ability to wait till the time promises gets resolved in its body. 
     async componentDidMount(){
-    //    console.log("cdm");
-      
-    let url="https://newsapi.org/v2/top-headlines?country=in&apiKey=d452a98a7a264e58b4ee32f12efb45bf";
+     
+    let url="https://newsapi.org/v2/top-headlines?country=in&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=1&pageSize=20";
     let data= await fetch(url); //data is a promise here. It will fetch the url 
     let parsedData=await data.json(); //here we are converting data into parsed format
 
     console.log(parsedData);
     // console.log(data);
 
-    this.setState({articles: parsedData.articles}) //we change the value of state variable using setState() method in class based components
+    this.setState({articles: parsedData.articles, totalResults:parsedData.totalResults}) //we change the value of state variable using setState() method in class based components
+    }
+
+    handlePrevClick= async ()=>{
+    //   console.log("Prev");//To check if Prev is actually getting called when Prev button is clicked
+    let url=`https://newsapi.org/v2/top-headlines?country=in&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${this.state.page-1}&pageSize=20`;
+    let data= await fetch(url); //data is a promise here. It will fetch the url 
+    let parsedData=await data.json(); //here we are converting data into parsed format
+
+    console.log(parsedData);
+    // console.log(data);
+
+    
+        this.setState({
+            page: this.state.page-1,
+            articles: parsedData.articles
+
+        })
+    }
+
+     handleNextClick=async ()=>{
+        //console.log("Next");//To check if Next is actually getting called when Next button is clicked
+
+        let url=`https://newsapi.org/v2/top-headlines?country=in&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${this.state.page + 1}&pageSize=20`;
+    let data= await fetch(url); //data is a promise here. It will fetch the url 
+    let parsedData=await data.json(); //here we are converting data into parsed format
+
+    console.log(parsedData);
+    // console.log(data);
+
+    
+        this.setState({
+            page: this.state.page+1,
+            articles: parsedData.articles
+
+        })
     }
 
   render() {
@@ -57,6 +92,12 @@ export class News extends Component {
             
             
         </div>
+         {/* Below we have added bootstrap flex class for buttons. Also, &larr; and &rarr; are used for left and right arrow respectively in HTML. We have added onClick event listener alongwith disabled property so that anytime we are already on page 1 or less, Prev button should get disabled.*/}
+        <div className="container d-flex justify-content-between">
+        <button disabled={this.state.page<=1} type="button" className="btn btn-dark " onClick={this.handlePrevClick}>&larr; Prev</button>
+        <button disabled={this.state.page === Math.ceil(this.state.totalResults/20)} type="button" className="btn btn-dark " onClick={this.handleNextClick}>Next &rarr;</button>
+        </div>
+        {/* Since every page has 20 articles as we have given pageSize=20 in the url, we will disable Next button on the last page  */}
         {/* {console.log("render")} Order of execution -> constructor -> Render() -> componentDidMount()*/}
     </div>);
   }

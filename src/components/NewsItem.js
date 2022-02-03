@@ -1,5 +1,5 @@
 // rce -> React's class based component
-import { getByTitle } from '@testing-library/react';
+//import { getByTitle } from '@testing-library/react';
 import React, { Component } from 'react';
 
 export class NewsItem extends Component {
@@ -24,7 +24,7 @@ export class NewsItem extends Component {
             <div className="card-body">
                 <h5 className="card-title">{title}</h5>
                 <p className="card-text">{description}</p>
-                <a href={newsUrl} target="_blank" className="btn btn-sm btn-primary">Read More</a>
+                <a rel="noreferrer" href={newsUrl} target="_blank" className="btn btn-sm btn-dark">Read More</a>
                 {/* We have imported newsUrl from news.js above . btn-sm class above makes the btn a little smaller in size */}
             </div>
 </div>
