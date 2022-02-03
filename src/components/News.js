@@ -213,6 +213,7 @@ export class News extends Component {
     super(); // Here we are calling constructor of super class. Note this is mandatory call and if missed will throw an error.
     console.log("This is constructor from News compoenent");
     //this.state helps us in setting the current state inside constructor. We can also set state using this.props (as done in NewsItem.js). Since for any given NewsItem we won't be changing title and description, therefore we are not setting it as state, rather we are passing it as a prop (Refer NewsItem.js). Note: We can never change props.Although, We can change state by passing props.
+    
     this.state={
         articles: this.articles,
         loading: false
@@ -224,17 +225,21 @@ export class News extends Component {
     return (
     <div className="container my-3">
         <h2>Top Headlines</h2>
+        {/* this.state.articles will give us access to all the articles and then we are applying map function to all those articles below to print the data in browser console. */}
+        {/* {this.state.articles.map((element)=>{console.log(element)})} */}
+
         <div className="row">
-            {/* In bootstrap there is grid of 12 columns. col-md-4 means that in medium devices width of one column will be equal to 4 columns. Therefore we will have 3 such columns of width of 4 columns(original bootstrap grid). Also we have given dummy values to title and description below for the time being. Here newsUrl below, will uniquely identify every news item, though we are yet to work on it. newsUrl="TODO" which is a dummy value assigned for now.*/}
-            <div className="col-md-4">
-            <NewsItem title="Title" description="Desc" imageurl="https://cdn.cnn.com/cnnnext/dam/assets/220201180534-tonga-jan-27-super-tease.jpg" newsUrl="TODO"></NewsItem> 
+        
+        {/* We are able to iterate through all the articles via map method as it traverses through every single element (represented by element parameter) and in this case returns the card format present in div tag. Note: every element that we are traversing should have a unique key, without which it will throw error. In this case key= url*/}
+        {this.state.articles.map((element)=>{
+            return <div className="col-md-4" key={element.url}>
+            <NewsItem title={element.title.slice(0,40)} description={element.description.slice(0,80)} imageurl={element.urlToImage} newsUrl={element.url}></NewsItem> 
             </div>
-            <div className="col-md-4">
-            <NewsItem title="Title" description="Desc"></NewsItem>
-            </div>
-            <div className="col-md-4">
-            <NewsItem title="Title" description="Desc"></NewsItem>
-            </div>
+        })}
+            {/* slice method above will make sure that no. of characters getting displayed in description should not exceed 80. In bootstrap there is grid of 12 columns. col-md-4 means that in medium devices width of one column will be equal to 4 standard columns(grid). Therefore we will have 3 such columns of width of 4 columns(original bootstrap grid) in every row. */}
+            
+            {/* after completion of Till now we have managed to display all the top headlines from articles array. But this is the data that we have copied from JSON file and then using it. Instead what we want to do is to fetch data directly from api so that we can have access to latest headlines. We will be working on it from next video. */}
+            
         </div>
         
     </div>);
