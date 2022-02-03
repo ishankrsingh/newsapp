@@ -14,8 +14,13 @@ export default class App extends Component {
   render() {
     return ( //We have used () here for returning data as our code is longer than a single line.
     <div>
-      <NavBar></NavBar>
-      <News></News>
+      <NavBar>
+
+      </NavBar>
+      {/* Through the pageSize prop below, we will be able to limit the no. of news items we want to see in a single page*/}
+      <News pageSize={9}> 
+
+      </News>
          {/* Hello {this.d}, this is my first class based component.  */}
           {/* As we can see in the above example, we can only access class variables using this operator */}
     </div>
