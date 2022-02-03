@@ -8,4 +8,5 @@ export class Spinner extends Component {
   }
 }
 
+// Note: We don't need external gif to behave as a loader, because bootsrap also contains various loaders. Just look it up.
 export default Spinner;

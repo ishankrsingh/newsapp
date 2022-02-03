@@ -3,10 +3,22 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
+import PropTypes from 'prop-types'; //impt
+
 
 export class News extends Component {
-  //We have gotten rid of articles (manual data from JSON) as now we are directly fetching data from the given NewsAPI.
-  //Also although we json data is giving us 38 results, we can only see 20 at a time(in a single page), so we will need to make Next and Prev button inorder to switch pages, which we will do in next video.
+    
+    static defaultProps={
+        country: 'in',
+        pageSize: 1,
+        category:'general'
+    }
+
+    static propTypes={
+        country: PropTypes.string,
+        pageSize: PropTypes.number,
+        category:PropTypes.string,
+    }
 
   //Below constructor will be called everytime an object of News component is created (in this case everytime News tag is used).
   constructor() {
@@ -24,7 +36,7 @@ export class News extends Component {
   // componentDidMount() is a lifecycle method will run once render() method has completed its execution.
   //async function has the ability to wait till the time promises gets resolved in its body.
   async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=1&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=1&pageSize=${this.props.pageSize}`;
     this.setState({loading:true});
     let data = await fetch(url); //data is a promise here. It will fetch the url
     let parsedData = await data.json(); //here we are converting data into parsed format
@@ -41,7 +53,7 @@ export class News extends Component {
 
   handlePrevClick = async () => {
     //   console.log("Prev");//To check if Prev is actually getting called when Prev button is clicked
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${
       this.state.page - 1
     }&pageSize=${this.props.pageSize}`;
     this.setState({loading:true});
@@ -61,7 +73,7 @@ export class News extends Component {
   handleNextClick = async () => {
     //console.log("Next");//To check if Next is actually getting called when Next button is clicked
 
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${
       this.state.page + 1
     }&pageSize=${this.props.pageSize}`;
     

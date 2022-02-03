@@ -18,8 +18,8 @@ export class NewsItem extends Component {
     return (
     <div className="my-3">
         {/* Card from Bootstrap */}
-        <div className="card" style={{width:"18rem"}}> 
-        {/* Since style attribute above,was inline by default(refer its code in bootstrap doc) therfore we have converted it into an object*/}
+        <div className="card"> 
+        {/* We have removed style component from the above tag as it was being used to set a fixed width of 18rem which was making causing newsItems to not be centered in mobile view*/}
           <img src={imageurl} className="card-img-top" alt="..."/>
             <div className="card-body">
                 <h5 className="card-title">{title}</h5>

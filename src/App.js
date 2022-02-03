@@ -18,7 +18,7 @@ export default class App extends Component {
 
       </NavBar>
       {/* Through the pageSize prop below, we will be able to limit the no. of news items we want to see in a single page*/}
-      <News pageSize={9}> 
+      <News pageSize={9} country="in" category="technology"> 
 
       </News>
          {/* Hello {this.d}, this is my first class based component.  */}
