@@ -20,17 +20,22 @@ export class News extends Component {
         category:PropTypes.string,
     }
 
+    capitalizeFirstLetter=(string)=>{
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
   //Below constructor will be called everytime an object of News component is created (in this case everytime News tag is used).
-  constructor() {
-    super(); // Here we are calling constructor of super class. Note this is mandatory call and if missed will throw an error.
+  constructor(props) {
+    super(props); // Here we are calling constructor of super class. Note this is mandatory call and if missed will throw an error.
     console.log("This is constructor from News compoenent");
-    //this.state helps us in setting the current state inside constructor. We can also set state using this.props (as done in NewsItem.js). Since for any given NewsItem we won't be changing title and description, therefore we are not setting it as state, rather we are passing it as a prop (Refer NewsItem.js). Note: We can never change props.Although, We can change state by passing props.
+    //this.state helps us in setting the current state inside constructor. We can also set state using this.props (as done in News Item.js). Since for any given NewsItem we won't be changing title and description, therefore we are not setting it as state, rather we are passing it as a prop (Refer NewsItem.js). Note: We can never change props.Although, We can change state by passing props.
 
     this.state = {
       articles: [],
       loading: false,
       page: 1,
     };
+    document.title=`${this.capitalizeFirstLetter(this.props.category)} - NewsMonkey`; //Since we are using props inside constructor, therefore we have to pass as an argument in both constructor() as well as super(). Here we are also capitalizing the first letter of category in title.
   }
   
   
@@ -80,7 +85,7 @@ export class News extends Component {
   render() {
     return (
       <div className="container my-3">
-        <h1 className="text-center">Top Headlines</h1>
+        <h1 className="text-center">NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h1>
         {/* Show loader (Spinner component) only when loading state is false */}
         {this.state.loading && <Spinner></Spinner>}
         {/* this.state.articles will give us access to all the articles and then we are applying map function to all those articles below to print the data in browser console. */}
