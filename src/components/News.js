@@ -32,63 +32,49 @@ export class News extends Component {
       page: 1,
     };
   }
-  //I am not going to change articles inside the constructor, rather will do it in componentDidMount()
-  // componentDidMount() is a lifecycle method will run once render() method has completed its execution.
-  //async function has the ability to wait till the time promises gets resolved in its body.
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=1&pageSize=${this.props.pageSize}`;
+  
+  
+  async updateNews(){
+
+
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({loading:true});
     let data = await fetch(url); //data is a promise here. It will fetch the url
     let parsedData = await data.json(); //here we are converting data into parsed format
 
     console.log(parsedData);
     // console.log(data);
-
+    //we change the value of state variable using setState() method in class based components
     this.setState({
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
       loading:false
-    }); //we change the value of state variable using setState() method in class based components
+    });
+  }
+  
+  
+  //I am not going to change articles inside the constructor, rather will do it in componentDidMount()
+  // componentDidMount() is a lifecycle method will run once render() method has completed its execution.
+  //async function has the ability to wait till the time promises gets resolved in its body.
+  
+  async componentDidMount() {//For this function page=1, which is already set in constructor, so we don't have to do it below using setState()
+    this.updateNews();
   }
 
-  handlePrevClick = async () => {
+  handlePrevClick = async () => {//For this function page=page-1
     //   console.log("Prev");//To check if Prev is actually getting called when Prev button is clicked
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${
-      this.state.page - 1
-    }&pageSize=${this.props.pageSize}`;
-    this.setState({loading:true});
-    let data = await fetch(url); //data is a promise here. It will fetch the url
-    let parsedData = await data.json(); //here we are converting data into parsed format
-
-    console.log(parsedData);
-    // console.log(data);
-
     this.setState({
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-      loading:false
+        page: this.state.page-1
     });
+    this.updateNews(); //We have to use 'this' since we are in class
   };
 
-  handleNextClick = async () => {
+  handleNextClick = async () => {//For this function page=page+1
     //console.log("Next");//To check if Next is actually getting called when Next button is clicked
-
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${
-      this.state.page + 1
-    }&pageSize=${this.props.pageSize}`;
-    
-    this.setState({loading:true});
-    let data = await fetch(url); //data is a promise here. It will fetch the url
-    let parsedData = await data.json(); //here we are converting data into parsed format
-
-    console.log(parsedData);
-    // console.log(data);
-
     this.setState({
-      page: this.state.page + 1,
-      articles: parsedData.articles,
-      loading:false
+        page: this.state.page+1
     });
+    this.updateNews();
   };
 
   render() {
