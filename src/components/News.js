@@ -44,7 +44,7 @@ export class News extends Component {
   async updateNews(){
 
     this.props.setProgress(10);
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({loading:true});
     this.props.setProgress(30);
     let data = await fetch(url); //data is a promise here. It will fetch the url
@@ -93,7 +93,7 @@ export class News extends Component {
       
         this.setState({page:this.state.page + 1})
 
-        const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+        const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     
     let data = await fetch(url); //data is a promise here. It will fetch the url
     let parsedData = await data.json(); //here we are converting data into parsed format
@@ -111,7 +111,7 @@ export class News extends Component {
   render() {
     return (
       <>
-        <h1 className="text-center">NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h1>
+        <h1 className="text-center my-4" >NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h1>
         {/* Show loader (Spinner component) only when loading state is true */}
         {this.state.loading && <Spinner></Spinner>}
         {/* this.state.articles will give us access to all the articles and then we are applying map function to all those articles below to print the data in browser console. */}

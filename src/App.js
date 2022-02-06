@@ -19,6 +19,7 @@ export default class App extends Component {
   //Note: in class based component we are using render method to return our code, which was not the case in functional based component(in which we were returning the data directly).
   // Render method is a lifecycle method. When react loads any component, series of methods run in the background which renders the HTML onto the screen. JSX gets converted to HTML first and then it renders HTML onto the screen.
   pageSize=9;
+  apiKey=process.env.REACT_APP_NEWS_API; //We have created an environment variable in .env.local file which has a variable REACT_APP_NEWS_API that has our api key. And in order to access that variable we have to use process.env.(variable_name)  as written above. Also in order reflect the changes made in .env.local file we have re-start our server, i.e., terminate the current server and start it again(npm-run-start). 
 
   state={
     progress:0
@@ -48,13 +49,13 @@ export default class App extends Component {
             renders the first one that matches the current URL.   Below is the updated code of React Router Version 6*/}
             {/* Note: Prior to adding unique key to every News component below, even when we were clicking on any of the categories,although path in the url was changing but page was not re-rendering or remounting. If we wanted to look at the new results, reload was required to re-render the page. This was happening because we are using News component in every Route, so react was not re-rendering or remounting. So we had to add key(should be unique) to every News component in order to make it unique and thus telling react to re-render the page once we click on any of the categories. */}
         <Routes>
-          <Route path="/"  element={ <News setProgress={this.setProgress} key="general" pageSize={this.pageSize} country="in" category="general"/>}/>
-          <Route path="/business"  element={ <News setProgress={this.setProgress} key="business" pageSize={this.pageSize} country="in" category="business"/>}/>
-          <Route path="/entertainment"  element={ <News setProgress={this.setProgress} key="entertainment" pageSize={this.pageSize} country="in" category="entertainment"/>}/>
-          <Route path="/health"  element={ <News setProgress={this.setProgress} key="health" pageSize={this.pageSize} country="in" category="health"/>}/>
-          <Route path="/science"  element={ <News setProgress={this.setProgress} key="science" pageSize={this.pageSize} country="in" category="science"/>}/>
-          <Route path="/sports"  element={ <News setProgress={this.setProgress} key="sports" pageSize={this.pageSize} country="in" category="sports"/>}/>
-          <Route path="/technology"  element={ <News setProgress={this.setProgress} key="technology" pageSize={this.pageSize} country="in" category="technology"/>}/>
+          <Route path="/"  element={ <News setProgress={this.setProgress} apiKey={this.apiKey} key="general" pageSize={this.pageSize} country="in" category="general"/>}/>
+          <Route path="/business"  element={ <News setProgress={this.setProgress} apiKey={this.apiKey} key="business" pageSize={this.pageSize} country="in" category="business"/>}/>
+          <Route path="/entertainment"  element={ <News setProgress={this.setProgress} apiKey={this.apiKey} key="entertainment" pageSize={this.pageSize} country="in" category="entertainment"/>}/>
+          <Route path="/health"  element={ <News setProgress={this.setProgress} apiKey={this.apiKey} key="health" pageSize={this.pageSize} country="in" category="health"/>}/>
+          <Route path="/science"  element={ <News setProgress={this.setProgress} apiKey={this.apiKey} key="science" pageSize={this.pageSize} country="in" category="science"/>}/>
+          <Route path="/sports"  element={ <News setProgress={this.setProgress} apiKey={this.apiKey} key="sports" pageSize={this.pageSize} country="in" category="sports"/>}/>
+          <Route path="/technology"  element={ <News setProgress={this.setProgress} apiKey={this.apiKey} key="technology" pageSize={this.pageSize} country="in" category="technology"/>}/>
           
         </Routes>
       </Router>
