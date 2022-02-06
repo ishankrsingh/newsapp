@@ -20,9 +20,13 @@ export class NewsItem extends Component {
         {/* Card from Bootstrap */}
         <div className="card"> 
         {/* Below we have used badge component from bootstrap to show the source. We had to change left and z-index property manually to adjust the CSS.*/}
-        <span className="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style={{left: '90%', zindex: '1'}}> 
-                   {source}
-                  </span>
+        {/* Since in mobile view, bootstrap badge was overflowing, there we got rid of all the styling in span tag of badge and introduced our styling in div tag below.*/}
+        <div style={{display: 'flex',
+            justifyContent: 'flex-end',
+            position: 'absolute',
+            right: '0'}}>
+        <span className="badge rounded-pill bg-danger" >{source}</span>
+        </div>
           <img src={imageurl} className="card-img-top" alt="..."/>
             <div className="card-body">
                 <h5 className="card-title">{title} </h5>

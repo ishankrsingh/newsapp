@@ -43,12 +43,13 @@ export class News extends Component {
   
   async updateNews(){
 
-
+    this.props.setProgress(10);
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=d452a98a7a264e58b4ee32f12efb45bf&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({loading:true});
+    this.props.setProgress(30);
     let data = await fetch(url); //data is a promise here. It will fetch the url
     let parsedData = await data.json(); //here we are converting data into parsed format
-
+    this.props.setProgress(50);
     console.log(parsedData);
     // console.log(data);
     //we change the value of state variable using setState() method in class based components
@@ -57,6 +58,7 @@ export class News extends Component {
       totalResults: parsedData.totalResults,
       loading:false
     });
+    this.props.setProgress(100);
   }
   
   
