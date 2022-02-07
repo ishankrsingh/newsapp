@@ -1,64 +1,51 @@
 // rce -> React's class based component
 
-import React, { Component } from "react";
+import React, { useEffect,useState } from "react";
 import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
 import PropTypes from 'prop-types'; //impt
 import InfiniteScroll from "react-infinite-scroll-component";
 
-
-export class News extends Component {
+//Changed News component from class to function, Moved defaultProps and Proptypes to the bottom and removed static and added function name to it,we will change all the states using useState(),changed async function syntax from async updateNews(){} to const updateNews=async()=>{}, replace this.props to props, The job of componentDidMount() will be taken care by useEffect hook,removed render(),Added const to  handleNextClick, handlePrevClick,capitalizeFirstLetter,fetchMoreData as they are no longer part of class. Also take care of all this operator as it is only used in class based components.
+const News =(props)=> {
     
-    static defaultProps={
-        country: 'in',
-        pageSize: 1,
-        category:'general'
-    }
+    const [articles,setArticles]=useState([]);
+    const [loading,setLoading]=useState(true);
+    const [page,setPage]=useState(1);
+    const [totalResults,setTotalResults]=useState(0);
+    
+    // document.title=`${capitalizeFirstLetter(props.category)} - NewsMonkey`;
 
-    static propTypes={
-        country: PropTypes.string,
-        pageSize: PropTypes.number,
-        category:PropTypes.string,
-    }
-
-    capitalizeFirstLetter=(string)=>{
+    const capitalizeFirstLetter=(string)=>{
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
 
-  //Below constructor will be called everytime an object of News component is created (in this case everytime News tag is used).
-  constructor(props) {
-    super(props); // Here we are calling constructor of super class. Note this is mandatory call and if missed will throw an error.
-    console.log("This is constructor from News compoenent");
-    //this.state helps us in setting the current state inside constructor. We can also set state using this.props (as done in News Item.js). Since for any given NewsItem we won't be changing title and description, therefore we are not setting it as state, rather we are passing it as a prop (Refer NewsItem.js). Note: We can never change props.Although, We can change state by passing props.
-
-    this.state = {
-      articles: [],
-      loading: true,
-      page: 1,
-      totalResults: 0
-    };
-    document.title=`${this.capitalizeFirstLetter(this.props.category)} - NewsMonkey`; //Since we are using props inside constructor, therefore we have to pass as an argument in both constructor() as well as super(). Here we are also capitalizing the first letter of category in title.
-  }
   
   
-  async updateNews(){
+  const updateNews=async()=>{
 
-    this.props.setProgress(10);
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    this.setState({loading:true});
-    this.props.setProgress(30);
+    props.setProgress(10);
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    
+    setLoading(true);
+    props.setProgress(30);
     let data = await fetch(url); //data is a promise here. It will fetch the url
     let parsedData = await data.json(); //here we are converting data into parsed format
-    this.props.setProgress(50);
+    props.setProgress(50);
     console.log(parsedData);
     // console.log(data);
+
+    setArticles(parsedData.articles);
+    setTotalResults(parsedData.totalResults);
+    setLoading(false);
+
     //we change the value of state variable using setState() method in class based components
-    this.setState({
-      articles: parsedData.articles,
-      totalResults: parsedData.totalResults,
-      loading:false
-    });
-    this.props.setProgress(100);
+    // this.setState({
+    //   articles: parsedData.articles,
+    //   totalResults: parsedData.totalResults,
+    //   loading:false
+    // });
+    props.setProgress(100);
   }
   
   
@@ -66,34 +53,41 @@ export class News extends Component {
   // componentDidMount() is a lifecycle method will run once render() method has completed its execution.
   //async function has the ability to wait till the time promises gets resolved in its body.
   
-  async componentDidMount() {//For this function page=1, which is already set in constructor, so we don't have to do it below using setState()
-    this.updateNews();
-  }
+//   useEffect(()=>{
+//     effect
+//     return ()=>{
+//         cleanup
+//     }
+//  },[input])
 
-  handlePrevClick = async () => {//For this function page=page-1
-    //   console.log("Prev");//To check if Prev is actually getting called when Prev button is clicked
-    this.setState({
-        page: this.state.page-1
-    });
-    this.updateNews(); //We have to use 'this' since we are in class
-  };
+  useEffect(()=>{
+    document.title=`${capitalizeFirstLetter(props.category)} - NewsMonkey`;
+    updateNews(); 
+    //eslint-disable-next-line
+  },[])
 
-  handleNextClick = async () => {//For this function page=page+1
-    //console.log("Next");//To check if Next is actually getting called when Next button is clicked
-    this.setState({
-        page: this.state.page+1
-    });
-    this.updateNews();
-  };
+//   const handlePrevClick = async () => {//For this function page=page-1
+//     //   console.log("Prev");//To check if Prev is actually getting called when Prev button is clicked
+//     //setPage()
+    
+//     setPage(page-1);
+//     updateNews(); //We have to use 'this' since we are in class
+//   };
 
-  fetchMoreData = async () => {
+//   const handleNextClick = async () => {//For this function page=page+1
+//     //console.log("Next");//To check if Next is actually getting called when Next button is clicked
+//     setPage(page+1);
+//     updateNews();
+//   };
+
+  const fetchMoreData = async () => {
     // a fake async api call like which sends
     // 20 more records in 1.5 secs
 
-      
-        this.setState({page:this.state.page + 1})
-
-        const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
+        // this.setState({page:this.state.page + 1})
+        setPage(page+1);//Whenever we are trying to fetch new news, it is thrwoing us error as setPage is a asynchronous func.it is taking time to fetch news. Therefore we will directly change page to page+1 in the above url and then set page=page+1.
+        
     
     let data = await fetch(url); //data is a promise here. It will fetch the url
     let parsedData = await data.json(); //here we are converting data into parsed format
@@ -101,25 +95,25 @@ export class News extends Component {
     console.log(parsedData);
     // console.log(data);
     //we change the value of state variable using setState() method in class based components
-    this.setState({
-      articles: this.state.articles.concat(parsedData.articles),
-      totalResults: parsedData.totalResults,
-      loading:false
-    });
+    
+    setArticles(articles.concat(parsedData.articles));
+    setTotalResults(parsedData.totalResults);
+    // setLoading(false);
+    
   };
 
-  render() {
+  
     return (
       <>
-        <h1 className="text-center my-4" >NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h1>
+        <h1 className="text-center pt-5 my-4"   >NewsMonkey - Top {capitalizeFirstLetter(props.category)} Headlines</h1>
         {/* Show loader (Spinner component) only when loading state is true */}
-        {this.state.loading && <Spinner></Spinner>}
+        {loading && <Spinner></Spinner>}
         {/* this.state.articles will give us access to all the articles and then we are applying map function to all those articles below to print the data in browser console. */}
         {/* {this.state.articles.map((element)=>{console.log(element)})} */}
         <InfiniteScroll
-          dataLength={this.state.articles.length}
-          next={this.fetchMoreData}
-          hasMore={this.state.articles.length!==this.state.totalResults}
+          dataLength={articles.length}
+          next={fetchMoreData}
+          hasMore={articles.length!==totalResults}
           loader={<Spinner/>}
         >
         
@@ -138,7 +132,7 @@ export class News extends Component {
         <div className="row">
           {/* We are able to iterate through all the articles via map method as it traverses through every single element (represented by element parameter) and in this case returns the card format present in div tag. Note: every element that we are traversing should have a unique key, without which it will throw error. In this case key= url*/}
           {/* Till now , we were displaying data only when loading was completed, but from now onwards instead of not displaying anything when loading is true, we will concatenate the new data (for infinite scroll feature). So we are getting rid of !this.state.loading below, so that data is always visible.  */}
-          {this.state.articles.map((element) => {
+          {articles.map((element) => {
             return (
               <div className="col-md-4" key={element.url}>
                 <NewsItem
@@ -166,7 +160,19 @@ export class News extends Component {
         {/* {console.log("render")} Order of execution -> constructor -> Render() -> componentDidMount()*/}
       </>
     );
-  }
+  
+}
+
+News.defaultProps={
+    country: 'in',
+    pageSize: 1,
+    category:'general'
+}
+
+News.propTypes={
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category:PropTypes.string,
 }
 
 export default News;

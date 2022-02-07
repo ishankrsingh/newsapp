@@ -1,8 +1,9 @@
 // rce -> React's class based component
 //import { getByTitle } from '@testing-library/react';
-import React, { Component } from 'react';
+import React from 'react';
 
-export class NewsItem extends Component {
+//changed NewsItem class to function, passed props as an argument as we are making use of it, changed this.props to props as this keyword is not required in function based components(FCE),removed render().
+const NewsItem =(props)=> {
    
     // //Below constructor will be called everytime an object of NewsItem component is created (in this case everytime NewsItem tag is used).
     // constructor(){
@@ -12,8 +13,8 @@ export class NewsItem extends Component {
 
 
 
-  render() {
-      let {title,description,imageurl,newsUrl,author,date,source} = this.props; //Destructuring in JS to obtain as many props as we want. 
+  
+      let {title,description,imageurl,newsUrl,author,date,source} = props; //Destructuring in JS to obtain as many props as we want. 
     //   We can also set state using this.props (as done in NewsItem.js). Since for any given NewsItem we won't be changing title and description, therefore we are not setting it as state, rather we are passing it as a prop (Refer NewsItem.js). Note: We can never change props.Although, We can change state by passing props.
     return (
     <div className="my-3">
@@ -37,7 +38,7 @@ export class NewsItem extends Component {
             </div>
 </div>
     </div>);
-  }
+  
 }
 
 export default NewsItem;
