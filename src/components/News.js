@@ -61,7 +61,7 @@ const News =(props)=> {
 //  },[input])
 
   useEffect(()=>{
-    document.title=`${capitalizeFirstLetter(props.category)} - NewsMonkey`;
+    document.title=`${capitalizeFirstLetter(props.category)} - TidBits Daily`;
     updateNews(); 
     //eslint-disable-next-line
   },[])
@@ -105,7 +105,7 @@ const News =(props)=> {
   
     return (
       <>
-        <h1 className="text-center pt-5 my-4"   >NewsMonkey - Top {capitalizeFirstLetter(props.category)} Headlines</h1>
+        <h1 className="text-center pt-5 my-4"   >TidBits Daily - Top {capitalizeFirstLetter(props.category)} Headlines</h1>
         {/* Show loader (Spinner component) only when loading state is true */}
         {loading && <Spinner></Spinner>}
         {/* this.state.articles will give us access to all the articles and then we are applying map function to all those articles below to print the data in browser console. */}

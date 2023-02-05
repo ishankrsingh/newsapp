@@ -1,6 +1,7 @@
 // rce -> React's class based component
 //import { getByTitle } from '@testing-library/react';
 import React from 'react';
+import imageNotFound from './ImageNotFound.jpg'
 
 //changed NewsItem class to function, passed props as an argument as we are making use of it, changed this.props to props as this keyword is not required in function based components(FCE),removed render().
 const NewsItem =(props)=> {
@@ -16,6 +17,9 @@ const NewsItem =(props)=> {
   
       let {title,description,imageurl,newsUrl,author,date,source} = props; //Destructuring in JS to obtain as many props as we want. 
     //   We can also set state using this.props (as done in NewsItem.js). Since for any given NewsItem we won't be changing title and description, therefore we are not setting it as state, rather we are passing it as a prop (Refer NewsItem.js). Note: We can never change props.Although, We can change state by passing props.
+    
+    imageurl = imageurl==null ? imageNotFound: imageurl;
+
     return (
     <div className="my-3">
         {/* Card from Bootstrap */}
